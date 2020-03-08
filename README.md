@@ -6,10 +6,10 @@ general-conversors is a library for convert N-level dictionaries to one-level di
 
 
 ## Installation
-Use the package manager [pip](https://pypi.org/) to install general-conversions.
+Use the package manager [pip](https://pypi.org/) to install general-conversors.
 
 ```bash
-pip3 install general-conversions
+pip3 install general-conversors
 ```
 
 ## Usage
