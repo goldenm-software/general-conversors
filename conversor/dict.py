@@ -26,6 +26,8 @@ class ToMultiLevel:
   -------
   _scan_down(key=str, value=any)      : private
     Iterate values and append in result
+  set_source(source=dict)             : public
+    Set new source and reset result
   convert()                           : public
     Convert method
   """
@@ -55,6 +57,11 @@ class ToMultiLevel:
       Key to scan
     value   : any
       Value to scan
+
+    Return
+    ------
+    element : dict
+      Final dictionary
     """
 
     if '.' in key:
@@ -133,6 +140,10 @@ class ToOneLevel:
     Validate if is an array or dict
   _scan_down(key=str, value=any)      : private
     Iterate values and append in result
+  set_source(source=dict)             : public
+    Set new source and reset result
+  to_json()                           : public
+    Converts convert() return to JSON object
   convert()                           : public
     Convert method
   """
@@ -208,7 +219,7 @@ class ToOneLevel:
 
   def to_json(self):
     """
-    Final result to JSON object
+    Final result as JSON object
 
     Return
     ------

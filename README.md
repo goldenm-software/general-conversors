@@ -13,9 +13,39 @@ pip3 install general-conversions
 ```
 
 ## Usage
-
+To 1-Level dictionary
 ```python
-TO DO
+from conversor.dict import ToOneLevel
+
+source = {
+  'error': False,
+  'result': {
+    'executed': True,
+    'payload': 'Hello world',
+    'code': 200
+  }
+}
+
+conversor = ToOneLevel(source=source)
+result = conversor.convert()
+print('Result:', result)
+# Result: {'error': False, 'result.executed': True, 'result.payload': 'Hello world', 'result.code': 200}
+```
+To N-level level dictionary
+```python
+from conversor.dict import ToMultiLevel
+
+source = {
+  'error': False,
+  'result.executed': True,
+  'result.payload': 'Hello world',
+  'result.code': 200
+}
+
+conversor = ToMultiLevel(source=source)
+result = conversor.convert()
+print('Result:', result)
+# Result: {'error': False, 'result': {'executed': True, 'payload': 'Hello world', 'code': 200}}
 ```
 
 ## Contributing
