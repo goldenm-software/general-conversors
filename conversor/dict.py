@@ -227,7 +227,7 @@ class ToOneLevel:
       JSON-converted dict
     """
 
-    return json.loads(self.convert())
+    return json.dumps(self.convert())
 
   def convert(self):
     """
