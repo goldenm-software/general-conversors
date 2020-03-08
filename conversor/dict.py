@@ -1,13 +1,118 @@
 """
-Helpers
+Dictionary Conversors
 """
 
 import json
 
-class Convsersor:
+class ToMultiLevel:
   """
   Conversor
-  Convert a python dict to flespi dict
+  Convert a 1-Level dict to N-level dict
+
+  Since : 2020-03-08
+
+  Notes
+  -----
+  Covnert method = convert()
+
+  Attributes
+  ----------
+  _result : dict : private
+    Final result after conversion
+  _source : dict : private
+    Source or original dict to convert
+
+  Methods
+  -------
+  _scan_down(key=str, value=any)      : private
+    Iterate values and append in result
+  convert()                           : public
+    Convert method
+  """
+
+  _result = {}
+  _source = {}
+
+  def __init__(self, source):
+    """
+    Constructor
+
+    Parameters
+    ----------
+    source : dict
+      Original dict to convert
+    """
+
+    self._source = source
+
+  def _scan_down(self, key, value, element):
+    """
+    Convert to dictionary
+
+    Parameters
+    ----------
+    key     : str
+      Key to scan
+    value   : any
+      Value to scan
+    """
+
+    if '.' in key:
+      key = key.split('.')
+
+      key_list = []
+
+      for index, key_down in enumerate(key):
+        if index == 0:
+          continue
+
+        key_list.append(key_down)
+
+      key = key[0]
+
+      if key not in element:
+        element[key] = {}
+
+      element[key] = self._scan_down('.'.join(key_list), value, element[key])
+    else:
+      element[key] = value
+
+    return element
+
+  def set_source(self, source):
+    """
+    Set a new source
+
+    Parameters
+    ----------
+    source : dict
+      New source
+    """
+
+    self._source = source
+    self._result = {}
+
+  def convert(self):
+    """
+    Conversor
+
+    Return
+    ------
+    _result : dict
+      Converted dictionary
+    """
+
+    self._result = {}
+
+    for key, value in self._source.items():
+      self._scan_down(key, value, self._result)
+
+    return self._result
+
+class ToOneLevel:
+  """
+  Conversor
+  Convert a N-level dict to 1-Level dict
 
   Since : 2020-03-08
 
@@ -66,7 +171,7 @@ class Convsersor:
 
   def _scan_down(self, key, value):
     """
-    Convert to dictionary (Flespi)
+    Down scanner
 
     Parameters
     ----------
@@ -101,9 +206,9 @@ class Convsersor:
     self._source = source
     self._result = {}
 
-  def to_flespi(self):
+  def to_json(self):
     """
-    Flespi result
+    Final result to JSON object
 
     Return
     ------
