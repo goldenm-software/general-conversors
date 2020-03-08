@@ -1,4 +1,4 @@
 /.env
 /dist
-/wialon.egg-info
+/general_conversors.egg-info
 /test.py
