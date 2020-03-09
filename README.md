@@ -22,14 +22,23 @@ source = {
   'result': {
     'executed': True,
     'payload': 'Hello world',
-    'code': 200
+    'code': 200,
+    'source_code_url': 'http://google.com'
   }
 }
 
+## replace_underscore as True
+conversor = ToOneLevel(source=source, replace_underscore=True)
+result = conversor.convert()
+print('Result replacing underscore:', result)
+# Result replacing underscore: {'error': False, 'result.executed': True, 'result.payload': 'Hello world', 'result.code': 200, 'result.source.code.url': 'http://google.com'}
+
+## replace_underscore as False (Default)
 conversor = ToOneLevel(source=source)
 result = conversor.convert()
 print('Result:', result)
-# Result: {'error': False, 'result.executed': True, 'result.payload': 'Hello world', 'result.code': 200}
+# Result: {'error': False, 'result.executed': True, 'result.payload': 'Hello world', 'result.code': 200, 'result.source_code_url': 'http://google.com'}
+
 ```
 To N-level level dictionary
 ```python

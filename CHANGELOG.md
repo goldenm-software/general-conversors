@@ -1,4 +1,7 @@
 # Changelog
+## Version 1.0.2
+- Added feature to replace underscore (\_) to dot (.)
+
 ## Version 1.0.1
 - Fixed issue related to README.md
 

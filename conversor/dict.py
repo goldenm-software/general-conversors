@@ -129,39 +129,47 @@ class ToOneLevel:
 
   Attributes
   ----------
-  _result : dict : private
+  _result             : dict : private
     Final result after conversion
-  _source : dict : private
+  _source             : dict : private
     Source or original dict to convert
+  _replace_underscore : bool : private
+    Underscore replacing mode (Default = False)
 
   Methods
   -------
-  _validate_is_array_dict(value=any)  : private
+  _validate_is_array_dict(value=any)    : private
     Validate if is an array or dict
-  _scan_down(key=str, value=any)      : private
+  _validate_replace_underscore(key=str) : private
+    Validate and replace (if is enabled) any underscore (_) to dot (.)
+  _scan_down(key=str, value=any)        : private
     Iterate values and append in result
-  set_source(source=dict)             : public
+  set_source(source=dict)               : public
     Set new source and reset result
-  to_json()                           : public
+  to_json()                             : public
     Converts convert() return to JSON object
-  convert()                           : public
+  convert()                             : public
     Convert method
   """
 
   _result = {}
   _source = {}
+  _replace_underscore = False
 
-  def __init__(self, source):
+  def __init__(self, source, replace_underscore=False):
     """
     Constructor
 
     Parameters
     ----------
-    source : dict
+    source              : dict
       Original dict to convert
+    replace_underscore  : bool
+      Set True if you want to replace any underscore (_) to dot (.)
     """
 
     self._source = source
+    self._replace_underscore = replace_underscore
 
   def _validate_is_array_dict(self, value):
     """
@@ -180,6 +188,26 @@ class ToOneLevel:
 
     return isinstance(value, (dict, list,))
 
+  def _validate_replace_underscore(self, key):
+    """
+    Validate and replace (if is enabled) underscore (_) to dot (.)
+
+    Parameters
+    ----------
+    key : str
+      Key to validate and replace
+
+    Return
+    ------
+    key : str
+      Key validated
+    """
+
+    if '_' in key and self._replace_underscore:
+      return key.replace('_', '.')
+
+    return key
+
   def _scan_down(self, key, value):
     """
     Down scanner
@@ -192,6 +220,8 @@ class ToOneLevel:
       Value to scan
     """
 
+    key = self._validate_replace_underscore(key)
+
     iteration = None
     if isinstance(value, list):
       iteration = enumerate(value)
@@ -199,6 +229,8 @@ class ToOneLevel:
       iteration = value.items()
 
     for i, v in iteration:
+      i = self._validate_replace_underscore(i)
+
       if self._validate_is_array_dict(v):
         self._scan_down(f'{key}.{i}', v)
       else:
