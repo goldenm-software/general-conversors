@@ -1,0 +1,5 @@
+/.env
+/dist
+/general_conversors.egg-info
+/test.py
+/**/*/__pycache__
